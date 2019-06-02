@@ -175,7 +175,10 @@ AbsoluteElement.prototype.setHint = function () {
 AbsoluteElement.prototype.draw = function (renderer, bartop) {
 	if (this.invisible) return;
 	this.elemset = [];
-	renderer.beginGroup();
+	// TODO is this where I would break it up?
+	if (this.heads.length <= 1) {
+		renderer.beginGroup();
+	}
 	for (var i=0; i<this.children.length; i++) {
 		if (/*ABCJS.write.debugPlacement*/false) {
 			if (this.children[i].klass === 'ornament')
@@ -195,9 +198,12 @@ AbsoluteElement.prototype.draw = function (renderer, bartop) {
 			}
 		}
 	}
-	var g = renderer.endGroup(klass);
-	if (g)
-		this.elemset.push(g);
+	// TODO this too
+	if (this.heads.length <= 1) {
+		var g = renderer.endGroup(klass);
+		if (g)
+			this.elemset.push(g);
+	}
 	if (this.klass)
 		this.setClass("mark", "", "#00ff00");
 	if (this.hint)
